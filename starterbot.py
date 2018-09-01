@@ -7,8 +7,7 @@ import catchphrase_list as cl
 import random
 
 # instantiate Slack client
-#slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
-slack_client = SlackClient("xoxb-144432967633-e6s7CV0q2mqmcJNWVrjBS8gn")
+slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 # starterbot's user ID in Slack: value is assigned after the bot starts up
 starterbot_id = None
 
