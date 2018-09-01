@@ -73,7 +73,7 @@ def post_ian_catchphrase(channel="#house-crew"):
     ian_count = ian_count + 1
     slack_client.api_call(
         "chat.postMessage",
-        channel = "#house-crew",
+        channel = channel,
         text=message
     )
 
