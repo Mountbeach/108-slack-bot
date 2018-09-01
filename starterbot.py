@@ -55,6 +55,14 @@ def handle_command(command, channel):
         post_ian_catchphrase(channel)
         return
 
+    if command.startswith("sass"):
+        sass()
+        return
+
+    if command.startswith("echo"):
+        echo(command)
+        return
+
     # Sends the response back to the channel
     slack_client.api_call(
         "chat.postMessage",
@@ -77,24 +85,35 @@ def post_ian_catchphrase(channel="#house-crew"):
         text=message
     )
 
+def sass(channel="#house-crew"):
+    message = cl.navy
+    slack_client.api_call(
+        "chat.postMessage",
+        channel = channel,
+        text=message
+    )
+
+
+def echo(message, channel="#house-crew"):
+    message = message[5:]
+    slack_client.api_call(
+        "chat.postMessage",
+        channel = channel,
+        text=message
+    )
 if __name__ == "__main__":
     if slack_client.rtm_connect(auto_reconnect=True,with_team_state=False):
         print("Starter Bot connected and running!")
         # Read bot's user ID by calling Web API method `auth.test`
         starterbot_id = slack_client.api_call("auth.test")["user_id"]
         while True:
-            try:
-
-                now = datetime.datetime.now()
-                command, channel = parse_bot_commands(slack_client.rtm_read())
-                if command:
-                    handle_command(command, channel)
-                time.sleep(RTM_READ_DELAY)
-                #if ((int(time.time())-50400) % 4) == 0:
-                #    post_ian_catchphrase()
-	        if now.hour == 13 and now.minute == 0 and now.second == 00:
+            now = datetime.datetime.now()
+            command, channel = parse_bot_commands(slack_client.rtm_read())
+            if command:
+                handle_command(command, channel)
+            time.sleep(RTM_READ_DELAY)
+            if now.hour == 13 and now.minute == 0 and now.second == 00:
         	    post_ian_catchphrase()
-    	    except WebSocketConnectionClosedException:
-        	slack.rtm_connect()
+
     else:
         print("Connection failed. Exception traceback printed above.")
